@@ -2,6 +2,59 @@ const express = require('express');
 const db = require('../model/db');
 const router = express.Router();
 
+const cheerio = require("cheerio"); //html 코드를 jquery처럼 사용하게 하는 도구
+const axios = require("axios"); //api
+const iconv = require("iconv-lite");    //한글 깨짐 방지
+const url = "https://finance.naver.com/sise/lastsearch2.nhn";
+
+
+router.get("/excel/down", function(req,res){
+    let excel_data = [{"A":1,"B":2,"C":3,"D":4}]
+    res.xls('data.xlsx', excel_data);
+})
+
+router.get("/excel", function(req,res){
+    res.render("excel");
+})
+
+
+router.get("/crawling", function(req,res){
+
+    //arraybuffer 한글 깨짐 방지
+    axios({url:url, method:"GET", responseType:"arraybuffer"}).then(function(html){
+        const content = iconv.decode(html.data,"EUC-KR").toString();    //한글
+        const $ = cheerio.load(content);    //jsquery data
+
+       //const h3 = $('.sub_tlt');
+       //console.log(h3.text());
+
+        /*
+        const table = $(".type_5 tr td");
+        table.each(function(i,tag){
+            console.log($(tag).text().trim());
+        });
+        */
+
+        const table = $(".type_5 tr");
+        let result = new Array();
+
+        table.each(function(i,tag){
+            if ($(this).find("td.no").text().trim() != "") {
+                let obj = new Object();
+                obj.index = $(this).find("td.no").text().trim();
+                obj.titile = $(this).find("td > a.tltle").text().trim();
+                let datas = $(this).find("td > span.tah.p11").text().trim();
+                let data = datas.split('\n\t\t\t\t\n\t\t\t\t');
+                obj.prePrice = data[0];
+                obj.percent = data[1];
+                result.push(obj);
+            }
+        });
+
+        res.send({success:200, data:result});
+    });
+});
+
 router.get("/", function(req, res){
 /*
     let query = req.query;  //Dictionary
