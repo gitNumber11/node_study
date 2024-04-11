@@ -3,6 +3,9 @@ const helmet = require('helmet');
 const app = express();
 const ejs = require('ejs');
 const db = require('./model/db');
+const json2xls = require('json2xls');
+
+app.use(json2xls.middleware);
 
 //ejs setting
 app.set('view engine', 'ejs');

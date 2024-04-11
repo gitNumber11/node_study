@@ -23,7 +23,8 @@
 
             wb.SheetNames.forEach(function(sheetName){
                 var rowObj =XLSX.utils.sheet_to_json(wb.Sheets[sheetName]);
-                console.log(JSON.stringify(rowObj));
+                //console.log(JSON.stringify(rowObj));
+                console.table(rowObj);
             })
 
         };
