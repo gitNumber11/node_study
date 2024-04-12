@@ -8,5 +8,59 @@
 </head>
 <body>
     <h1><%= locals.title %></h1>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        //리터럴 방식
+        let a = function(){
+            console.log("리터럴 방식");
+        }
+        //화살표 함수 (Arrow Function) 문법
+        let b = () => {
+            console.log("arrow function");
+        }
+
+        //객체
+        let blog = {
+            owner : "noah",
+            url : "noahlogs.tistory.com",
+            getPost() {
+                console.log("ES6 문법 정리");
+            }
+        };
+        //기존 할당 방식
+        //let owner = blog.owner
+        //let getPost = blog.getPost()
+
+        //비구조 할당 방식
+        let { owner, getPost } = blog;
+
+        //함수에서 비구조 할당 방식으로 전달된 딕셔너리 값 꺼내기
+        let blogFunction = ({owner,url,getPost}) => {
+            console.log(owner)
+            console.log(url)
+            console.log(getPost())
+        }
+        blogFunction(blog)
+
+        //백틱
+        const id = "myId" ;
+        const url = `http://glenn.tistory.com/login/${id}` ;
+        const message1 = "줄바꿈을 하려면 \n 기호"
+        const message2 = ` 줄바꿈도 마음대로
+        사용이 가능. `
+
+        let numbers = [1,2,3,4,5,6,7];
+        
+        numbers.map((value,i) => {
+            console.log(value,i)
+        })
+
+        numbers.map(function(value,i) {
+            console.log(value,i)
+        })
+
+
+    </script>
+    
 </body>
 </html>
